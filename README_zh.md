@@ -225,5 +225,6 @@ print(similarity)
 ## License
 FlagEmbedding基于[MIT License](LICENSE)开源协议。
 
-
-
+<p align="center">
+  <sub><span style="color:#999999;">本项目受新一代人工智能国家科技重大专项（No. 2022ZD0116300）支持。</span></sub>
+</p>
