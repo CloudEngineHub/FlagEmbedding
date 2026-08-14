@@ -258,3 +258,7 @@ If you find this repository useful, please consider giving a star :star: and cit
 ## License
 FlagEmbedding is licensed under the [MIT License](https://github.com/FlagOpen/FlagEmbedding/blob/master/LICENSE). 
 
+<p align="center">
+  <sub>This work is supported by the National Science and Technology Major Project (No. 2022ZD0116300).</sub>
+</p>
+
