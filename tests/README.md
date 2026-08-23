@@ -6,6 +6,7 @@ This directory contains tests for the FlagEmbedding library, including compatibi
 
 - `test_imports_v5.py`: Tests that imports work with Transformers v5, particularly the compatibility layer for `is_torch_fx_available`.
 - `test_finetune_trainer_compat.py`: Tests the Transformers Trainer API migration, including `processing_class`/legacy `tokenizer` construction, reranker runner arguments, and processor checkpoint saving.
+- `test_reranker_tokenizer_compat.py`: Tests reranker pair preparation across Transformers v4/v5, including the v5 removal of `prepare_for_model`.
 - `test_infer_embedder_basic.py`: Tests basic functionality of BGE embedder models with a small public checkpoint.
 - `test_infer_reranker_basic.py`: Tests basic functionality of reranker models.
 
@@ -27,6 +28,9 @@ pytest tests/test_imports_v5.py
 
 # Run the fine-tuning Trainer compatibility tests
 pytest tests/test_finetune_trainer_compat.py
+
+# Run the reranker tokenizer compatibility tests
+pytest tests/test_reranker_tokenizer_compat.py
 
 # Run with verbose output
 pytest -v tests/

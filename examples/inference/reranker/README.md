@@ -199,6 +199,7 @@ It supports `BAAI/bge-reranker-v2-gemma`:
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 def get_inputs(pairs, tokenizer, prompt=None, max_length=1024):
     if prompt is None:
@@ -222,7 +223,8 @@ def get_inputs(pairs, tokenizer, prompt=None, max_length=1024):
                                    add_special_tokens=False,
                                    max_length=max_length,
                                    truncation=True)
-        item = tokenizer.prepare_for_model(
+        item = prepare_for_model_compat(
+            tokenizer,
             [tokenizer.bos_token_id] + query_inputs['input_ids'],
             sep_inputs + passage_inputs['input_ids'],
             truncation='only_second',
@@ -262,6 +264,7 @@ It supports `BAAI/bge-reranker-v2-minicpm-layerwise`:
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 def get_inputs(pairs, tokenizer, prompt=None, max_length=1024):
     if prompt is None:
@@ -285,7 +288,8 @@ def get_inputs(pairs, tokenizer, prompt=None, max_length=1024):
                                    add_special_tokens=False,
                                    max_length=max_length,
                                    truncation=True)
-        item = tokenizer.prepare_for_model(
+        item = prepare_for_model_compat(
+            tokenizer,
             [tokenizer.bos_token_id] + query_inputs['input_ids'],
             sep_inputs + passage_inputs['input_ids'],
             truncation='only_second',
@@ -326,6 +330,7 @@ It supports `BAAI/bge-reranker-v2.5-gemma2-lightweight`:
 ```python
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 def last_logit_pool(logits: torch.Tensor,
                     attention_mask: torch.Tensor) -> torch.Tensor:
@@ -361,7 +366,8 @@ def get_inputs(pairs, tokenizer, prompt=None, max_length=1024):
                                    add_special_tokens=False,
                                    max_length=max_length,
                                    truncation=True)
-        item = tokenizer.prepare_for_model(
+        item = prepare_for_model_compat(
+            tokenizer,
             [tokenizer.bos_token_id] + query_inputs['input_ids'],
             sep_inputs + passage_inputs['input_ids'],
             truncation='only_second',
