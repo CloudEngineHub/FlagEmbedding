@@ -42,13 +42,11 @@ data_args="\
 
 training_args="\
     --output_dir ./test_decoder_only_base_bge-multilingual-gemma2 \
-    --overwrite_output_dir \
     --learning_rate 1e-4 \
     --fp16 \
     --num_train_epochs $num_train_epochs \
     --per_device_train_batch_size $per_device_train_batch_size \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../../ds_stage1.json \
     --logging_steps 1 \
@@ -59,6 +57,8 @@ training_args="\
     --normalize_embeddings True \
     --kd_loss_type m3_kd_loss \
 "
+
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 
 cmd="torchrun --nproc_per_node $num_gpus \
     -m FlagEmbedding.finetune.embedder.decoder_only.base \
