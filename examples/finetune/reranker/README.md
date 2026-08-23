@@ -158,19 +158,18 @@ torchrun --nproc_per_node 2 \
     --pad_to_multiple_of 8 \
     --knowledge_distillation False \
 	--output_dir ./test_encoder_only_base_bge-reranker-base \
-    --overwrite_output_dir \
     --learning_rate 6e-5 \
     --fp16 \
     --num_train_epochs 2 \
     --per_device_train_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --weight_decay 0.01 \
     --deepspeed ../ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 ### (2) bge-reranker-v2-gemma
@@ -199,19 +198,18 @@ torchrun --nproc_per_node 2 \
     --passage_instruction_for_rerank 'B: ' \
     --passage_instruction_format '{}{}' \
     --output_dir ./test_decoder_only_base_bge-reranker-v2-minicpm-layerwise \
-    --overwrite_output_dir \
     --learning_rate 2e-4 \
     --bf16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --weight_decay 0.01 \
     --deepspeed ../ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 Here are some new arguments:
@@ -258,19 +256,18 @@ torchrun --nproc_per_node 2 \
     --passage_instruction_for_rerank 'B: ' \
     --passage_instruction_format '{}{}' \
 	--output_dir ./test_decoder_only_base_bge-reranker-v2-minicpm-layerwise \
-    --overwrite_output_dir \
     --learning_rate 2e-4 \
     --bf16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --weight_decay 0.01 \
     --deepspeed ../ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 Here are some new arguments:

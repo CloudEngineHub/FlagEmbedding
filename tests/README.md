@@ -1,10 +1,11 @@
 # FlagEmbedding Tests
 
-This directory contains tests for the FlagEmbedding library, including compatibility tests for Transformers 5.0.
+This directory contains tests for the FlagEmbedding library, including compatibility tests for Transformers 5.x.
 
 ## Test Files
 
 - `test_imports_v5.py`: Tests that imports work with Transformers v5, particularly the compatibility layer for `is_torch_fx_available`.
+- `test_finetune_trainer_compat.py`: Tests the Transformers Trainer API migration, including `processing_class`/legacy `tokenizer` construction, reranker runner arguments, and processor checkpoint saving.
 - `test_infer_embedder_basic.py`: Tests basic functionality of BGE embedder models with a small public checkpoint.
 - `test_infer_reranker_basic.py`: Tests basic functionality of reranker models.
 
@@ -24,13 +25,16 @@ pytest tests/
 # Run a specific test file
 pytest tests/test_imports_v5.py
 
+# Run the fine-tuning Trainer compatibility tests
+pytest tests/test_finetune_trainer_compat.py
+
 # Run with verbose output
 pytest -v tests/
 ```
 
-## Transformers 5.0 Compatibility
+## Transformers 5.x Compatibility
 
-The tests verify that FlagEmbedding works with Transformers 5.0, which removed the `is_torch_fx_available` function.
+The tests verify that FlagEmbedding works with Transformers 5.x, which removed the `is_torch_fx_available` function and renamed the Trainer `tokenizer` argument to `processing_class`.
 The compatibility layer in `FlagEmbedding/utils/transformers_compat.py` provides this function for backward compatibility.
 
 **Note:** Transformers 5.0 requires Python 3.10 or higher. If you're using Python 3.9 or lower, you'll need to upgrade your Python version to test with Transformers 5.0.

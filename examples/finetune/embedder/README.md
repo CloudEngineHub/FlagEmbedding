@@ -184,13 +184,11 @@ torchrun --nproc_per_node 2 \
     --query_instruction_format '{}{}' \
     --knowledge_distillation False \
 	--output_dir ./test_encoder_only_base_bge-large-en-v1.5 \
-    --overwrite_output_dir \
     --learning_rate 1e-5 \
     --fp16 \
     --num_train_epochs 2 \
     --per_device_train_batch_size 2 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../ds_stage0.json \
     --logging_steps 1 \
@@ -200,6 +198,7 @@ torchrun --nproc_per_node 2 \
     --sentence_pooling_method cls \
     --normalize_embeddings True \
     --kd_loss_type kl_div
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 ### (2) bge-m3
@@ -223,13 +222,11 @@ torchrun --nproc_per_node 2 \
     --small_threshold 0 \
     --drop_threshold 0 \
     --output_dir ./test_encoder_only_m3_bge-m3_sd \
-    --overwrite_output_dir \
     --learning_rate 1e-5 \
     --fp16 \
     --num_train_epochs 2 \
     --per_device_train_batch_size 2 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../ds_stage0.json \
     --logging_steps 1 \
@@ -243,6 +240,7 @@ torchrun --nproc_per_node 2 \
     --use_self_distill True \
     --fix_encoder False \
     --self_distill_start_step 0
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 Here are some new arguments:
@@ -282,13 +280,11 @@ torchrun --nproc_per_node 2 \
     --small_threshold 0 \
     --drop_threshold 0 \
 	--output_dir ./test_decoder_only_base_bge-multilingual-gemma2_sd \
-    --overwrite_output_dir \
     --learning_rate 1e-4 \
     --fp16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../ds_stage1.json \
     --logging_steps 1 \
@@ -298,6 +294,7 @@ torchrun --nproc_per_node 2 \
     --sentence_pooling_method last_token \
     --normalize_embeddings True \
     --kd_loss_type m3_kd_loss
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 Here are some new arguments:
@@ -346,13 +343,11 @@ torchrun --nproc_per_node 2 \
     --retrieval_use_examples True \
     --icl_suffix_str '\n<response>' \
     --output_dir ./test_decoder_only_base_bge-en-icl_sd \
-    --overwrite_output_dir \
     --learning_rate 1e-4 \
     --fp16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../ds_stage1.json \
     --logging_steps 1 \
@@ -362,6 +357,7 @@ torchrun --nproc_per_node 2 \
     --sentence_pooling_method last_token \
     --normalize_embeddings True \
     --kd_loss_type kl_div
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 Here are some new arguments:
@@ -383,4 +379,3 @@ Here are some new arguments:
 - **`example_passage_max_len`**: The max length of example passage.
 - **`retrieval_use_examples`**: If passed, will use examples for retrieval.
 - **`icl_suffix_str`**: The suffix string for ICL dataset.
-

@@ -39,13 +39,11 @@ data_args="\
 
 training_args="\
     --output_dir ./test_encoder_only_base_bge-large-en-v1.5_sd \
-    --overwrite_output_dir \
     --learning_rate 1e-5 \
     --fp16 \
     --num_train_epochs $num_train_epochs \
     --per_device_train_batch_size $per_device_train_batch_size \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ../../ds_stage0.json \
     --logging_steps 1 \
@@ -56,6 +54,8 @@ training_args="\
     --normalize_embeddings True \
     --kd_loss_type kl_div \
 "
+
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 
 cmd="torchrun --nproc_per_node $num_gpus \
     -m FlagEmbedding.finetune.embedder.encoder_only.base \

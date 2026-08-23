@@ -104,13 +104,11 @@ torchrun --nproc_per_node 2 \
     --query_instruction_format '{}{}' \
     --knowledge_distillation False \
     --output_dir ./test_encoder_only_base_bge-large-en-v1.5 \
-    --overwrite_output_dir \
     --learning_rate 1e-5 \
     --fp16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --deepspeed ./finetune/ds_stage0.json \
     --logging_steps 1 \
@@ -120,6 +118,7 @@ torchrun --nproc_per_node 2 \
     --sentence_pooling_method cls \
     --normalize_embeddings True \
     --kd_loss_type kl_div
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 ### 2. Reranker
@@ -137,19 +136,18 @@ torchrun --nproc_per_node 2 \
     --pad_to_multiple_of 8 \
     --knowledge_distillation False \
     --output_dir ./test_encoder_only_base_bge-reranker-large \
-    --overwrite_output_dir \
     --learning_rate 6e-5 \
     --fp16 \
     --num_train_epochs 1 \
     --per_device_train_batch_size 2 \
     --gradient_accumulation_steps 1 \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --weight_decay 0.01 \
     --deepspeed ./finetune/ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 ```
 
 ## 5. Evaluation
@@ -187,4 +185,3 @@ python -m FlagEmbedding.evaluation.msmarco \
     --devices cuda:0 cuda:1 cuda:2 cuda:3 cuda:4 cuda:5 cuda:6 cuda:7 \
     --cache_dir ./cache/model
 ```
-

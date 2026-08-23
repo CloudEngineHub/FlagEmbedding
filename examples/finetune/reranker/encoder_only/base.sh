@@ -33,20 +33,20 @@ data_args="\
 
 training_args="\
     --output_dir ./test_encoder_only_base_bge-reranker-base \
-    --overwrite_output_dir \
     --learning_rate 6e-5 \
     --fp16 \
     --num_train_epochs $num_train_epochs \
     --per_device_train_batch_size $per_device_train_batch_size \
     --gradient_accumulation_steps $gradient_accumulation_steps \
     --dataloader_drop_last True \
-    --warmup_ratio 0.1 \
     --gradient_checkpointing \
     --weight_decay 0.01 \
     --deepspeed ../../ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000 \
 "
+
+# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
 
 cmd="torchrun --nproc_per_node $num_gpus \
     -m FlagEmbedding.finetune.reranker.encoder_only.base \
