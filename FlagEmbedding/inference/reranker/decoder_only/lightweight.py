@@ -10,6 +10,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from FlagEmbedding.abc.inference import AbsReranker
 from FlagEmbedding.inference.reranker.encoder_only.base import sigmoid
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 
 def last_logit_pool_lightweight(logits: Tensor,
@@ -333,7 +334,8 @@ class LightweightLLMReranker(AbsReranker):
                     all_queries_inputs_sorted[:min(len(all_queries_inputs_sorted), batch_size)], 
                     all_passages_inputs_sorted[:min(len(all_passages_inputs_sorted), batch_size)]
                 ):
-                    item = self.tokenizer.prepare_for_model(
+                    item = prepare_for_model_compat(
+                        self.tokenizer,
                         [self.tokenizer.bos_token_id] + query_inputs['input_ids'],
                         sep_inputs + passage_inputs['input_ids'],
                         truncation='only_second',
@@ -388,7 +390,8 @@ class LightweightLLMReranker(AbsReranker):
             query_lengths = []
             prompt_lengths = []
             for query_inputs, passage_inputs in zip(queries_inputs, passages_inputs):
-                item = self.tokenizer.prepare_for_model(
+                item = prepare_for_model_compat(
+                    self.tokenizer,
                     [self.tokenizer.bos_token_id] + query_inputs['input_ids'],
                     sep_inputs + passage_inputs['input_ids'],
                     truncation='only_second',

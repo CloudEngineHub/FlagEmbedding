@@ -5,6 +5,7 @@ from typing import Any, List, Union, Tuple, Optional
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 from FlagEmbedding.abc.inference import AbsReranker
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 
 def sigmoid(x):
@@ -144,7 +145,8 @@ class BaseReranker(AbsReranker):
                 **kwargs
             )['input_ids']
             for q_inp, d_inp in zip(queries_inputs_batch, passages_inputs_batch):
-                item = self.tokenizer.prepare_for_model(
+                item = prepare_for_model_compat(
+                    self.tokenizer,
                     q_inp,
                     d_inp,
                     truncation='only_second',

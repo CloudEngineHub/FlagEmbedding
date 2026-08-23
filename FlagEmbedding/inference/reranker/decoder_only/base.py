@@ -10,6 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from FlagEmbedding.abc.inference import AbsReranker
 from FlagEmbedding.inference.reranker.encoder_only.base import sigmoid
+from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 
 def last_logit_pool(logits: Tensor,
@@ -89,7 +90,8 @@ class DatasetForReranker(Dataset):
         query_inputs = self.all_queries_inputs[item]
         passage_inputs = self.all_passages_inputs[item]
         if self.tokenizer.bos_token_id is not None and self.tokenizer.bos_token_id != self.tokenizer.pad_token_id:
-            item = self.tokenizer.prepare_for_model(
+            item = prepare_for_model_compat(
+                self.tokenizer,
                 [self.tokenizer.bos_token_id] + query_inputs['input_ids'],
                 self.sep_inputs + passage_inputs['input_ids'],
                 truncation='only_second',
@@ -100,7 +102,8 @@ class DatasetForReranker(Dataset):
                 add_special_tokens=False
             )
         else:
-            item = self.tokenizer.prepare_for_model(
+            item = prepare_for_model_compat(
+                self.tokenizer,
                 query_inputs['input_ids'],
                 self.sep_inputs + passage_inputs['input_ids'],
                 truncation='only_second',
@@ -371,7 +374,8 @@ class BaseLLMReranker(AbsReranker):
                     all_passages_inputs_sorted[:min(len(all_passages_inputs_sorted), batch_size)]
                 ):
                     if self.tokenizer.bos_token_id is not None and self.tokenizer.bos_token_id != self.tokenizer.pad_token_id:
-                        item = self.tokenizer.prepare_for_model(
+                        item = prepare_for_model_compat(
+                            self.tokenizer,
                             [self.tokenizer.bos_token_id] + query_inputs['input_ids'],
                             sep_inputs + passage_inputs['input_ids'],
                             truncation='only_second',
@@ -382,7 +386,8 @@ class BaseLLMReranker(AbsReranker):
                             add_special_tokens=False
                         )
                     else:
-                        item = self.tokenizer.prepare_for_model(
+                        item = prepare_for_model_compat(
+                            self.tokenizer,
                             query_inputs['input_ids'],
                             sep_inputs + passage_inputs['input_ids'],
                             truncation='only_second',
@@ -452,7 +457,8 @@ class BaseLLMReranker(AbsReranker):
                 batch_inputs = []
                 for query_inputs, passage_inputs in zip(queries_inputs, passages_inputs):
                     if self.tokenizer.bos_token_id is not None and self.tokenizer.bos_token_id != self.tokenizer.pad_token_id:
-                        item = self.tokenizer.prepare_for_model(
+                        item = prepare_for_model_compat(
+                            self.tokenizer,
                             [self.tokenizer.bos_token_id] + query_inputs['input_ids'],
                             sep_inputs + passage_inputs['input_ids'],
                             truncation='only_second',
@@ -463,7 +469,8 @@ class BaseLLMReranker(AbsReranker):
                             add_special_tokens=False
                         )
                     else:
-                        item = self.tokenizer.prepare_for_model(
+                        item = prepare_for_model_compat(
+                            self.tokenizer,
                             query_inputs['input_ids'],
                             sep_inputs + passage_inputs['input_ids'],
                             truncation='only_second',
