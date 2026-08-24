@@ -55,9 +55,10 @@ training_args="\
     --deepspeed ../../ds_stage0.json \
     --logging_steps 1 \
     --save_steps 1000 \
+    --warmup_steps 0.1 \
 "
 
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 
 cmd="torchrun --nproc_per_node $num_gpus \
     -m FlagEmbedding.finetune.reranker.decoder_only.base \

@@ -59,9 +59,10 @@ training_args="\
     --sentence_pooling_method last_token \
     --normalize_embeddings True \
     --kd_loss_type m3_kd_loss \
+    --warmup_steps 0.1 \
 "
 
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 
 cmd="torchrun --nproc_per_node $num_gpus \
     -m FlagEmbedding.finetune.embedder.decoder_only.base \

@@ -1,6 +1,32 @@
 """Tokenizer compatibility helpers for supported Transformers versions."""
 
+from collections.abc import Mapping
 from typing import Any, List, Optional, Sequence
+
+
+def pad_with_compat(tokenizer: Any, encoded_inputs: Any, **kwargs: Any) -> Any:
+    """Pad tokenized examples across Transformers v4 and v5.
+
+    Several FlagEmbedding inference paths sort individually tokenized
+    examples before padding, producing a list of mappings.  Transformers
+    releases do not all handle that representation consistently, so normalize
+    it to the equivalent mapping-of-lists representation before calling
+    ``tokenizer.pad``.
+
+    Inputs that are already mappings, empty inputs, and other supported
+    tokenizer inputs are passed through unchanged.
+    """
+    if (
+        isinstance(encoded_inputs, (list, tuple))
+        and encoded_inputs
+        and isinstance(encoded_inputs[0], Mapping)
+    ):
+        encoded_inputs = {
+            key: [example[key] for example in encoded_inputs]
+            for key in encoded_inputs[0].keys()
+        }
+
+    return tokenizer.pad(encoded_inputs, **kwargs)
 
 
 def _decode_token_ids(tokenizer: Any, token_ids: Sequence[int]) -> str:
