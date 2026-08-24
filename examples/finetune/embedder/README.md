@@ -197,8 +197,9 @@ torchrun --nproc_per_node 2 \
     --temperature 0.02 \
     --sentence_pooling_method cls \
     --normalize_embeddings True \
-    --kd_loss_type kl_div
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+    --kd_loss_type kl_div \
+    --warmup_steps 0.1
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 ```
 
 ### (2) bge-m3
@@ -239,8 +240,9 @@ torchrun --nproc_per_node 2 \
     --unified_finetuning True \
     --use_self_distill True \
     --fix_encoder False \
-    --self_distill_start_step 0
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+    --self_distill_start_step 0 \
+    --warmup_steps 0.1
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 ```
 
 Here are some new arguments:
@@ -293,8 +295,9 @@ torchrun --nproc_per_node 2 \
     --temperature 0.02 \
     --sentence_pooling_method last_token \
     --normalize_embeddings True \
-    --kd_loss_type m3_kd_loss
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+    --kd_loss_type m3_kd_loss \
+    --warmup_steps 0.1
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 ```
 
 Here are some new arguments:
@@ -356,8 +359,9 @@ torchrun --nproc_per_node 2 \
     --temperature 0.02 \
     --sentence_pooling_method last_token \
     --normalize_embeddings True \
-    --kd_loss_type kl_div
-# For transformers<=4.57.3, add --warmup_ratio 0.1; for transformers>=5.0.0, add --warmup_steps 0.1.
+    --kd_loss_type kl_div \
+    --warmup_steps 0.1
+# For transformers <= 4.57.3, replace --warmup_steps 0.1 with --warmup_ratio 0.1.
 ```
 
 Here are some new arguments:

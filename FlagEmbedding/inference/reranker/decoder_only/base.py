@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from FlagEmbedding.abc.inference import AbsReranker
 from FlagEmbedding.inference.reranker.encoder_only.base import sigmoid
-from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
+from FlagEmbedding.utils.tokenizer_compat import pad_with_compat, prepare_for_model_compat
 
 
 def last_logit_pool(logits: Tensor,
@@ -163,7 +163,8 @@ class Collater:
                 else:
                     feature["labels"] = np.concatenate([remainder, feature["labels"]]).astype(np.int64)
 
-        return self.tokenizer.pad(
+        return pad_with_compat(
+            self.tokenizer,
             data,
             padding=True,
             pad_to_multiple_of=8,

@@ -16,7 +16,7 @@ from transformers import (
 from typing import List
 
 from .AbsArguments import AbsRerankerDataArguments
-from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
+from FlagEmbedding.utils.tokenizer_compat import pad_with_compat, prepare_for_model_compat
 
 logger = logging.getLogger(__name__)
 
@@ -197,7 +197,8 @@ class AbsRerankerCollator(DataCollatorWithPadding):
         if isinstance(features[0], list):
             features = sum(features, [])
 
-        collated = self.tokenizer.pad(
+        collated = pad_with_compat(
+            self.tokenizer,
             features,
             padding=self.padding,
             max_length=self.query_max_len + self.passage_max_len,
@@ -391,7 +392,8 @@ class AbsLLMRerankerCollator(DataCollatorForSeq2Seq):
                 else:
                     feature["labels"] = np.concatenate([remainder, feature["labels"]]).astype(np.int64)
 
-        collated = self.tokenizer.pad(
+        collated = pad_with_compat(
+            self.tokenizer,
             features,
             padding=self.padding,
             max_length=self.query_max_len + self.passage_max_len,

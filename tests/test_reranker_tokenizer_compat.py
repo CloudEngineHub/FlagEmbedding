@@ -1,16 +1,15 @@
 import os
 from types import SimpleNamespace
 
-import pytest
 from transformers import AutoTokenizer
 
 from FlagEmbedding.abc.finetune.reranker.AbsDataset import AbsRerankerTrainDataset
 from FlagEmbedding.utils.tokenizer_compat import prepare_for_model_compat
 
 
-RERANKER_MODEL_PATH = os.environ.get(
+RERANKER_MODEL_NAME = os.environ.get(
     "FLAGEMBEDDING_RERANKER_MODEL",
-    "/share/project/Search-SWE/model/bge-reranker-base",
+    "BAAI/bge-reranker-base",
 )
 
 
@@ -26,14 +25,9 @@ class LegacyTokenizer:
         return {"input_ids": list(first_ids) + list(second_ids)}
 
 
-@pytest.mark.skipif(
-    not os.path.isdir(RERANKER_MODEL_PATH),
-    reason="local reranker model is not available",
-)
 def test_encoder_pair_preserves_v5_tokenizer_input_ids():
     tokenizer = AutoTokenizer.from_pretrained(
-        RERANKER_MODEL_PATH,
-        local_files_only=True,
+        RERANKER_MODEL_NAME,
     )
 
     query = "😀🧪"
@@ -62,14 +56,9 @@ def test_encoder_pair_preserves_v5_tokenizer_input_ids():
     assert actual["attention_mask"] == expected["attention_mask"]
 
 
-@pytest.mark.skipif(
-    not os.path.isdir(RERANKER_MODEL_PATH),
-    reason="local reranker model is not available",
-)
 def test_encoder_training_example_works_without_prepare_for_model():
     tokenizer = AutoTokenizer.from_pretrained(
-        RERANKER_MODEL_PATH,
-        local_files_only=True,
+        RERANKER_MODEL_NAME,
     )
     dataset = AbsRerankerTrainDataset.__new__(AbsRerankerTrainDataset)
     dataset.tokenizer = tokenizer
